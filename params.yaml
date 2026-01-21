@@ -1,0 +1,14 @@
+# Training Parameters
+batch_size: 32
+epochs: 2
+learning_rate: 0.001
+seed: 42
+model_name: efficientnet_b0
+
+# Data Configuration
+data_source: "https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip"
+data_dir: "pizza_steak_sushi"
+
+# Model Configuration
+image_size: 224
+dropout_rate: 0.2

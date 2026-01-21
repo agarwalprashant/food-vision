@@ -13,3 +13,5 @@ torchvision
 matplotlib
 torchinfo
 tqdm
+pyyaml
+dvc

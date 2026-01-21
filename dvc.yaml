@@ -1,0 +1,52 @@
+stages:
+  download_data:
+    cmd: python src/download_data.py
+    deps:
+      - src/download_data.py
+      - going_modular/helper_functions.py
+    params:
+      - data_source
+      - data_dir
+    outs:
+      - data/pizza_steak_sushi
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/pizza_steak_sushi
+      - going_modular/data_setup.py
+      - going_modular/engine.py
+      - going_modular/helper_functions.py
+    params:
+      - batch_size
+      - epochs
+      - learning_rate
+      - seed
+      - model_name
+    outs:
+      - models/efficientnet_b0_baseline.pth
+      - models/class_names.json
+    metrics:
+      - reports/training_metrics.json:
+          cache: false
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/efficientnet_b0_baseline.pth
+      - models/class_names.json
+      - data/pizza_steak_sushi
+      - going_modular/data_setup.py
+      - going_modular/engine.py
+      - reports/training_metrics.json
+    params:
+      - batch_size
+      - model_name
+    plots:
+      - reports/figures/loss_curves.png:
+          cache: false
+    metrics:
+      - reports/evaluation_metrics.json:
+          cache: false

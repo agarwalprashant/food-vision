@@ -1,0 +1,113 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: python src/download_data.py
+    deps:
+    - path: going_modular/helper_functions.py
+      hash: md5
+      md5: 63a7c374378397475d184e374242f98c
+      size: 10340
+    - path: src/download_data.py
+      hash: md5
+      md5: 889cc4edc2ea419bddc6d4be9bcd6fdd
+      size: 2853
+    params:
+      params.yaml:
+        data_dir: pizza_steak_sushi
+        data_source: 
+          https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip
+    outs:
+    - path: data/pizza_steak_sushi
+      hash: md5
+      md5: eec1201e0d278f9caa19d2208cbeaf82.dir
+      size: 16149950
+      nfiles: 300
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/pizza_steak_sushi
+      hash: md5
+      md5: eec1201e0d278f9caa19d2208cbeaf82.dir
+      size: 16149950
+      nfiles: 300
+    - path: going_modular/data_setup.py
+      hash: md5
+      md5: 234e6055a0b037d146d2af683e8c088c
+      size: 1982
+    - path: going_modular/engine.py
+      hash: md5
+      md5: 09229a4a604bd2008a675848986b6257
+      size: 6818
+    - path: going_modular/helper_functions.py
+      hash: md5
+      md5: 63a7c374378397475d184e374242f98c
+      size: 10340
+    - path: src/train.py
+      hash: md5
+      md5: 82ab1dcb9395c07e2d0d7b2a66355b34
+      size: 6779
+    params:
+      params.yaml:
+        batch_size: 32
+        epochs: 2
+        learning_rate: 0.001
+        model_name: efficientnet_b0
+        seed: 42
+    outs:
+    - path: models/class_names.json
+      hash: md5
+      md5: 2045efd520511b60b7b0ea384bd9471b
+      size: 27
+    - path: models/efficientnet_b0_baseline.pth
+      hash: md5
+      md5: 6fd2d65b3e4af76744299a3a43ac3263
+      size: 16345405
+    - path: reports/training_metrics.json
+      hash: md5
+      md5: 9adaca94ba193233a57f620b529d3899
+      size: 531
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/pizza_steak_sushi
+      hash: md5
+      md5: eec1201e0d278f9caa19d2208cbeaf82.dir
+      size: 16149950
+      nfiles: 300
+    - path: going_modular/data_setup.py
+      hash: md5
+      md5: 234e6055a0b037d146d2af683e8c088c
+      size: 1982
+    - path: going_modular/engine.py
+      hash: md5
+      md5: 09229a4a604bd2008a675848986b6257
+      size: 6818
+    - path: models/class_names.json
+      hash: md5
+      md5: 2045efd520511b60b7b0ea384bd9471b
+      size: 27
+    - path: models/efficientnet_b0_baseline.pth
+      hash: md5
+      md5: 6fd2d65b3e4af76744299a3a43ac3263
+      size: 16345405
+    - path: reports/training_metrics.json
+      hash: md5
+      md5: 9adaca94ba193233a57f620b529d3899
+      size: 531
+    - path: src/evaluate.py
+      hash: md5
+      md5: 1a81d6a9bbccddd7b37be9106393cf00
+      size: 7329
+    params:
+      params.yaml:
+        batch_size: 32
+        model_name: efficientnet_b0
+    outs:
+    - path: reports/evaluation_metrics.json
+      hash: md5
+      md5: d19d22d8cec922e2e76fbf484b4d9fae
+      size: 184
+    - path: reports/figures/loss_curves.png
+      hash: md5
+      md5: ddc380ce93c6c55c5c895864ff26913c
+      size: 109977
